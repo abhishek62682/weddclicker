@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weddclicker.in | Candid Photography &amp; Videography</title>
+    <meta name="description" content="Weddclicker.in — Candid Photography &amp; Videography. DM for bookings." />
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=Work+Sans:wght@400&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js"></script>
+    <style type="text/tailwindcss">
+      @font-face {
+        font-family: Soligant_Font;
+        src: url(font/Soligant.ttf);
+      }
+      .font-primary { font-family: Soligant_Font; }
+      @theme {
+        --color-cream: #efecd7;
+        --color-light-cream: #e6e2dd;
+        --color-dark-cream: #f0e8e0;
+        --color-cream-bg: #f0e8e0;
+        --font-secondary: "Inter", sans-serif;
+      }
+      body { font-family: "Inter", sans-serif; background-color: #ebeae3; }
+      .container-max { @apply max-w-[1200px] mx-auto w-full px-5 md:px-10; }
+
+      /* ===== LENIS (required base styles) ===== */
+      html.lenis,
+      html.lenis body {
+        height: auto;
+      }
+      .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+      }
+      .lenis.lenis-smooth [data-lenis-prevent] {
+        overscroll-behavior: contain;
+      }
+      .lenis.lenis-stopped {
+        overflow: hidden;
+      }
+      .lenis.lenis-smooth iframe {
+        pointer-events: none;
+      }
+
+      .max-w-container {
+        width: 100%;
+        max-width: 1300px;
+        margin: auto;
+        padding: 60px 24px;
+      }
+      @media (min-width: 768px) {
+        .max-w-container {
+          padding: 140px 24px;
+        }
+      }
+      #hero-background-image { transition: opacity 0.5s ease; }
+
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: white;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::before {
+        width: 100%;
+      }
+
+      #mobile-sidebar {
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      }
+      #mobile-sidebar.open {
+        transform: translateX(0);
+      }
+      #sidebar-overlay {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      #sidebar-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .noise-grain {
+        position: relative;
+        isolation: isolate;
+        background-color: #fffcf7;
+        overflow: hidden;
+      }
+      .noise-grain:after {
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        z-index: 1;
+        content: "";
+        pointer-events: none;
+        opacity: 0.2;
+        mix-blend-mode: multiply;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        background-size: 256px 256px;
+      }
+
+      /* ===== FILMS/PHOTOGRAPHY SWIPER ===== */
+      .cine-swiper .swiper-wrapper {
+        align-items: center;
+      }
+      .cine-swiper .swiper-slide {
+        position: relative;
+        display: block;
+        width: 50vw;
+        height: 500px;
+      }
+      .cine-swiper .swiper-slide-active {
+        z-index: 2;
+      }
+      .cine-swiper .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .cine-swiper .play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 70px;
+        height: 70px;
+        transform: translate(-50%, -50%);
+        border: 1.5px solid #fff;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .cine-swiper .swiper-slide-active .play {
+        opacity: 1;
+      }
+      @media (max-width: 768px) {
+        .cine-swiper .swiper-slide {
+          width: 88vw;
+          height: 340px;
+          clip-path: none !important;
+        }
+      }
+
+      /* ===== TESTIMONIAL SWIPER ===== */
+      .testimonial-swiper { width: 100%; }
+
+      /* ===== GALLERY MARQUEE ===== */
+      .marquee-row {
+        animation: marqueeX 50s linear infinite;
+        width: max-content;
+      }
+      @keyframes marqueeX {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+
+    <div id="mobile-sidebar" class="fixed top-0 right-0 h-full w-72 bg-[#1a1410] z-50 md:hidden flex flex-col px-8 py-10 gap-10">
+      <button id="close-sidebar-btn" class="self-end text-white text-2xl">
+        <i class="ri-close-line"></i>
+      </button>
+      <div class="flex flex-col gap-7 mt-4">
+        <a href="#about" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">About</a>
+        <a href="#films" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">Films</a>
+        <a href="#photography" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">Photography</a>
+        <a href="#packages" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">Packages</a>
+        <a href="#galleries" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">Gallery</a>
+        <a href="#testimonials" class="sidebar-link text-[14px] tracking-[0.2em] capitalize text-[#e6e2dd] hover:text-[#a88b6a] transition-colors duration-300">Testimonials</a>
+      </div>
+      <a href="#contact" class="mt-auto text-[0.65rem] tracking-[0.22em] uppercase border border-[#a88b6a] text-[#a88b6a] px-8 py-3.5 text-center hover:bg-[#a88b6a] hover:text-white transition-all duration-300">
+        Inquire Now
+      </a>
+    </div>
+
+    <div class="root">
+      <header class="w-full relative md:fixed md:top-0 md:left-0 h-[60vh] md:h-screen bg-red-900 overflow-hidden">
+
+        <!-- NAVBAR -->
+        <nav class="absolute top-0 left-0 w-full z-40 px-5 md:px-10 py-5 md:py-7 flex items-center justify-between">
+          <a href="#" class="font-primary text-white text-xl md:text-2xl tracking-wide">Weddclicker.in</a>
+          <div class="hidden md:flex items-center gap-10">
+            <a href="#about" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">About</a>
+            <a href="#films" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Films</a>
+            <a href="#photography" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Photography</a>
+            <a href="#packages" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Packages</a>
+            <a href="#galleries" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Gallery</a>
+            <a href="#testimonials" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Testimonials</a>
+            <a href="#contact" class="nav-link text-[13px] tracking-[0.2em] uppercase text-white/90 hover:text-white transition-colors duration-300">Contact</a>
+          </div>
+          <button id="hamburger-btn" class="md:hidden text-white text-3xl">
+            <i id="hamburger-icon" class="ri-menu-3-line"></i>
+          </button>
+        </nav>
+
+        <div class="w-full before:absolute before:inset-0 before:bg-black/50 before:content-[''] h-full relative">
+          <img id="hero-background-image" class="hero-background-image w-full h-full object-cover" src="https://static.wixstatic.com/media/c33238_295be364138845409c9883c2b85c4691~mv2.jpg/v1/fill/w_2840,h_1470,q_90,enc_avif,quality_auto/c33238_295be364138845409c9883c2b85c4691~mv2.jpg" alt="" />
+        </div>
+        <div class="hero-content left-1/2 -translate-x-1/2 space-y-4 md:space-y-5 absolute text-center w-full px-5" style="bottom: 60px;">
+          <h2 class="text-[36px] md:text-[66px] text-center font-normal text-cream font-primary" style="line-height: 1.2;">Timeless Wedding <br> Moments</h2>
+          <p class="text-sm md:text-base font-light text-light-cream uppercase tracking-widest">By Weddclicker.in</p>
+        </div>
+      </header>
+
+      <div class="spacer w-full h-0 md:h-screen"></div>
+
+      <div class="main-content relative z-10" style="background-color: #ebeae3;">
+
+        <section id="about" class="relative noise-grain">
+          <img src="assets/img/flower-illustration.png" alt="" class="hidden md:block absolute left-0 top-0 w-[180px] lg:w-[240px] opacity-70 z-0 pointer-events-none select-none rotate-90" />
+          <div class="container-max pt-20 md:pt-[80px]">
+            <div class="section-heading flex flex-col gap-[25px] mb-12 md:mb-[80px]">
+              <h3 class="font-primary text-center text-[26px] md:text-[40px] leading-tight md:leading-[48px]">
+                Creating Love Stories, <br />
+                One Celebration at a Time
+              </h3>
+              <p class="text-center text-sm md:text-[14px] leading-relaxed md:leading-[21px]">
+                We specialize in candid photography and videography, <br class="hidden md:block" />beautifully capturing love stories and weddings with unmatched artistry.
+              </p>
+              <div class="flex justify-center pt-2">
+                <a href="#work-section" class="bg-[#766f52] text-white font-normal uppercase px-10 py-4 hover:bg-[#5e5842] transition-colors duration-300" style="font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: 0.6px;">See Our Work</a>
+              </div>
+            </div>
+            <div id="work-section" class="section-content grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <img class="w-full h-auto object-cover" src="https://static.wixstatic.com/media/c33238_4300589d6f4f4a129ec635c64aec9b0c~mv2.jpg/v1/fill/w_772,h_1200,fp_0.45_0.30,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/vrt-img-web81.jpg" alt="" />
+              </div>
+              <div>
+                <img class="w-full h-auto object-cover" src="https://static.wixstatic.com/media/c33238_b0b12d2b5fb2461e9dd9d014f00ede53~mv2.webp/v1/fill/w_772,h_1200,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DSC04807.webp" alt="" />
+              </div>
+              <div>
+                <img class="w-full h-auto object-cover" src="https://static.wixstatic.com/media/c33238_12501431b84d492b95490113f220cc33~mv2.jpg/v1/fill/w_772,h_1200,fp_0.51_0.50,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DSC01010.jpg" alt="" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rewards" class="w-full noise-grain">
+          <div class="container-max py-20 md:py-[100px]">
+            <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+              <img src="assets/awards/wpa-badge-winner.png" alt="WPA Badge Winner" class="h-20 md:h-24 w-auto object-contain" />
+              <img src="assets/awards/wpa-badge-runnerup.png" alt="WPA Badge Runner Up" class="h-20 md:h-24 w-auto object-contain" />
+              <img src="assets/awards/wedmegood-logo2.png" alt="WedMeGood" class="h-14 md:h-16 w-auto object-contain" />
+              <img src="assets/awards/weddingwire.png" alt="Wedding Wire" class="h-12 md:h-14 w-auto object-contain" />
+              <img src="assets/awards/thebridesofindia.png" alt="The Brides of India" class="h-10 md:h-12 w-auto object-contain" />
+              <img src="assets/awards/idiva.png" alt="iDiva" class="h-8 md:h-10 w-auto object-contain" />
+            </div>
+          </div>
+        </section>
+
+        <!-- VIDEO BREAK -->
+        <section class="w-full relative">
+          <video class="w-full h-[500px] md:h-auto object-cover block" src="https://video.wixstatic.com/video/c33238_dd1fb270d861437d891a37b3a7363087/1080p/mp4/file.mp4" autoplay muted loop playsinline></video>
+          <div class="absolute inset-x-0 bottom-8 md:bottom-12 flex items-center justify-center">
+            <a href="#galleries" class="bg-[#766f52]/90 text-white uppercase px-8 py-4 hover:bg-[#5e5842] transition-colors duration-300" style="font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: 0.6px;">See More Films →</a>
+          </div>
+        </section>
+
+        <!-- FILMS -->
+        <section id="films" class="relative">
+            <div class="noise-grain overflow-hidden pt-[120px]">
+                <div class="relative z-10 text-center mb-[60px] md:mb-[90px] px-6">
+                    <h2 class="font-primary uppercase text-[40px] md:text-[64px] leading-none text-[#766f52]">
+                        Films
+                    </h2>
+                    <p class="mt-8 text-[15px] uppercase text-[#a8a28a]">
+                        Films that feel — every frame, a living memory.
+                    </p>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="inline-block border border-[#766f52] px-10 py-4 text-[12px] font-normal mt-10 uppercase tracking-[0.6px] text-[#766f52] font-[family-name:Work_Sans] transition-colors duration-300 hover:bg-[#766f52] hover:text-white">
+                        View All
+                    </a>
+                </div>
+
+                <div class="swiper cine-swiper relative z-10">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_4300589d6f4f4a129ec635c64aec9b0c~mv2.jpg/v1/fill/w_1600,h_900,fp_0.45_0.30,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/vrt-img-web81.jpg"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_2773d851203d4b71b05c997ac2f565bb~mv2.jpg/v1/fill/w_1600,h_900,fp_0.55_0.34,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/vrt-img-web133.jpg"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_4c22a4deca1d4f2c8a3ff99036664be4~mv2.webp/v1/fill/w_1600,h_900,fp_0.57_0.22,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/PKP_3130.webp"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_b6f4e0476f3f4eff8078f497bc9ef80f~mv2.jpg/v1/fill/w_1600,h_900,fp_0.53_0.68,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DSCF1202.jpg"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_092297fbeb264384be75aab207c7ccea~mv2.jpg/v1/fill/w_1600,h_900,fp_0.38_0.54,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/RSP03499.jpg"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://static.wixstatic.com/media/c33238_8f3cdbfd96d14c85a152b63bdb3493c4~mv2.jpg/v1/fill/w_1600,h_900,fp_0.50_0.50,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/vrt-img-web36.jpg"
+                                alt="Wedding film" loading="lazy" />
+                            <span class="play"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHOTOGRAPHY -->
+        <section id="photography" class="relative">
+            <div class="noise-grain overflow-hidden pt-[60px] md:pt-[120px]">
+                <div class="relative z-10 text-center mb-[60px] md:mb-[90px] px-6">
+                    <h2 class="font-primary uppercase text-[40px] md:text-[64px] leading-none text-[#766f52]">
+                        Photography
+                    </h2>
+                    <p class="mt-8 text-[15px] uppercase text-[#a8a28a]">
+                        The art of stillness — every frame felt, every story timeless
+                    </p>
+                    <a href="#" target="_blank" rel="noopener noreferrer"
+                        class="inline-block border border-[#766f52] px-10 py-4 text-[12px] font-normal mt-10 uppercase tracking-[0.6px] text-[#766f52] font-[family-name:Work_Sans] transition-colors duration-300 hover:bg-[#766f52] hover:text-white">
+                        View All
+                    </a>
+                </div>
+
+                <div class="swiper cine-swiper photo-swiper relative z-10">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/492c48f41efea423bc63513002d178068b9c24ee-5867x3911.jpg?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/f957f4c4d688d38a148ce51a2671bcd13879917a-11814x7876.jpg?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/4e27468a97d398f5945c91e1ef295835402d017f-6852x4568.jpg?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/d2d50330bb43bc9b20b995e8adec7c8b71a573b6-5977x3985.jpg?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/98912beb98697b9f31e260afc047b5a1da6dcc83-1280x720.png?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://cdn.sanity.io/images/isp6fu2u/production/5302e8c40689e5977928544cbc591da46459c43a-5039x6299.jpg?auto=format&w=1600&q=80"
+                                alt="Wedding photography" loading="lazy" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PACKAGES -->
+        <section id="packages" class="relative noise-grain">
+            <div class="overflow-hidden">
+                <div class="relative z-10 max-w-[1300px] mx-auto px-6 py-[100px] md:py-[120px]">
+                    <div class="text-center mb-[60px] md:mb-[90px]">
+                        <h2 class="font-primary uppercase text-[40px] md:text-[64px] leading-none text-[#766f52]">
+                            Choose your story
+                        </h2>
+                        <p class="mt-8 text-[15px] uppercase text-[#a8a28a]">
+                            Every celebration is different. Every package is tailored.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-[1100px] mx-auto">
+                        <div class="border border-[#d3cdbd] p-3">
+                            <div class="h-full text-[#4a452f] border border-[#d3cdbd] px-8 py-12 flex flex-col text-center">
+                                <p class="uppercase tracking-[3px] text-[13px] text-[#8a8468]">Stills</p>
+                                <h3 class="mt-4 font-primary uppercase text-[34px] leading-[36px]">Silver</h3>
+                                <p class="mt-6 text-[15px] text-[#8a8468]">Starting at ₹ XX,XXX</p>
+                                <ul class="mt-8 mb-10 text-[15px] leading-[22px] flex-1 text-left">
+                                    <li class="py-3 border-t border-[#d3cdbd]">1 lead photographer</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">1 day coverage</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">Edited gallery, 300+ photos</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">Online delivery</li>
+                                </ul>
+                                <a href="#contact"
+                                    class="inline-block self-center uppercase text-[12px] tracking-[0.6px] px-10 py-4 transition-colors duration-300 bg-[#766f52] text-white hover:bg-[#5e5842]"
+                                    style="font-family: &quot;Work Sans&quot;, sans-serif">Enquire Now</a>
+                            </div>
+                        </div>
+                        <div class="border border-[#d3cdbd] p-3">
+                            <div class="h-full bg-[#766f52] text-white px-8 py-12 flex flex-col text-center">
+                                <p class="uppercase tracking-[3px] text-[13px] text-white/70">Most Popular</p>
+                                <h3 class="mt-4 font-primary uppercase text-[34px] leading-[36px]">Gold</h3>
+                                <p class="mt-6 text-[15px] text-white/70">Starting at ₹ XX,XXX</p>
+                                <ul class="mt-8 mb-10 text-[15px] leading-[22px] flex-1 text-left">
+                                    <li class="py-3 border-t border-white/25">Photo and film team</li>
+                                    <li class="py-3 border-t border-white/25">Up to 2 days coverage</li>
+                                    <li class="py-3 border-t border-white/25">Cinematic highlight film</li>
+                                    <li class="py-3 border-t border-white/25">Same day edit</li>
+                                    <li class="py-3 border-t border-white/25">Premium album</li>
+                                </ul>
+                                <a href="#contact"
+                                    class="inline-block self-center uppercase text-[12px] tracking-[0.6px] px-10 py-4 transition-colors duration-300 bg-white text-[#4a452f] hover:bg-[#f1ede2]"
+                                    style="font-family: &quot;Work Sans&quot;, sans-serif">Enquire Now</a>
+                            </div>
+                        </div>
+                        <div class="border border-[#d3cdbd] p-3">
+                            <div class="h-full text-[#4a452f] border border-[#d3cdbd] px-8 py-12 flex flex-col text-center">
+                                <p class="uppercase tracking-[3px] text-[13px] text-[#8a8468]">Cinematic</p>
+                                <h3 class="mt-4 font-primary uppercase text-[34px] leading-[36px]">Platinum</h3>
+                                <p class="mt-6 text-[15px] text-[#8a8468]">Starting at ₹ XX,XXX</p>
+                                <ul class="mt-8 mb-10 text-[15px] leading-[22px] flex-1 text-left">
+                                    <li class="py-3 border-t border-[#d3cdbd]">Lead cinematographer</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">1 day coverage</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">Highlight film, 3 to 5 min</li>
+                                    <li class="py-3 border-t border-[#d3cdbd]">Full ceremony film</li>
+                                </ul>
+                                <a href="#contact"
+                                    class="inline-block self-center uppercase text-[12px] tracking-[0.6px] px-10 py-4 transition-colors duration-300 bg-[#766f52] text-white hover:bg-[#5e5842]"
+                                    style="font-family: &quot;Work Sans&quot;, sans-serif">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section id="testimonials" class="relative z-[12] overflow-hidden">
+          <div class="container-max py-20 md:py-[100px] flex flex-col lg:flex-row gap-8 lg:gap-16">
+            <div class="flex flex-col justify-between gap-8 lg:gap-12 w-full lg:w-[65%] overflow-hidden">
+              <div class="flex items-start sm:items-end justify-between gap-4 flex-wrap">
+                <div>
+                  <h2 class="text-[26px] md:text-[40px] leading-tight md:leading-[48px] font-normal text-black font-primary">
+                    Love stories <br/> our couples say
+                  </h2>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="carousel-left w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#d6bfa7] transition-colors duration-300">
+                    <i class="ri-arrow-left-line"></i>
+                  </div>
+                  <div class="carousel-right w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#d6bfa7] transition-colors duration-300">
+                    <i class="ri-arrow-right-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper mySwiper testimonial-swiper overflow-hidden">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide !bg-white !rounded-[24px] !p-7 !flex !flex-col !justify-between min-h-[220px]">
+                    <div class="flex flex-col gap-3">
+                      <img src="https://framerusercontent.com/images/nBmS1U8s92WIveVNePAFLYYFODo.svg?width=60&amp;height=12" alt="stars" class="w-14" />
+                      <p class="text-[#7a685d] text-[15px] leading-relaxed">Our wedding photos turned out absolutely magical. Every moment was captured so naturally and beautifully. We couldn't have asked for a better experience!</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-8">
+                      <img src="https://lh3.googleusercontent.com/a-/ALV-UjXjJRaPtAHqavR_kvY46i-C5QbUqfi4EubHGTYE_6eHx51ssedG=w72-h72-p-rp-mo-br100" alt="Riya" class="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h5 class="text-[#7a685d] text-sm font-semibold">Riya <span class="font-secondary">&amp;</span> Arjun</h5>
+                        <p class="text-[#7a685d] text-xs font-normal">Wedding Couple</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide !bg-white !rounded-[24px] !p-7 !flex !flex-col !justify-between min-h-[220px]">
+                    <div class="flex flex-col gap-3">
+                      <img src="https://framerusercontent.com/images/nBmS1U8s92WIveVNePAFLYYFODo.svg?width=60&amp;height=12" alt="stars" class="w-14" />
+                      <p class="text-[#7a685d] text-[15px] leading-relaxed">The cinematic video felt like a movie of our love story. Every detail was captured so perfectly — highly recommended!</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-8">
+                      <img src="https://lh3.googleusercontent.com/a-/ALV-UjWFU_SKrxF1OVifAN6C5PfuBjwq5PuSfsifeXDbvrDP-fG_ZJiP=w72-h72-p-rp-mo-br100" alt="Neha" class="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h5 class="text-[#7a685d] text-sm font-semibold">Neha <span class="font-secondary">&amp;</span> Karan</h5>
+                        <p class="text-[#7a685d] text-xs font-normal">Wedding Couple</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide !bg-white !rounded-[24px] !p-7 !flex !flex-col !justify-between min-h-[220px]">
+                    <div class="flex flex-col gap-3">
+                      <img src="https://framerusercontent.com/images/nBmS1U8s92WIveVNePAFLYYFODo.svg?width=60&amp;height=12" alt="stars" class="w-14" />
+                      <p class="text-[#7a685d] text-[15px] leading-relaxed">From pre-wedding shoot to final album, everything was smooth and professional. The photos are beyond perfect.</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-8">
+                      <img src="https://lh3.googleusercontent.com/a-/ALV-UjVhTd50oCMlMDUZkv0UiGH-hIgFYV2ZRJLN5LIHGrgf4wQ0aBF2=w72-h72-p-rp-mo-ba2-br100" alt="Priya" class="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h5 class="text-[#7a685d] text-sm font-semibold">Priya <span class="font-secondary">&amp;</span> Rohit</h5>
+                        <p class="text-[#7a685d] text-xs font-normal">Wedding Couple</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide !bg-white !rounded-[24px] !p-7 !flex !flex-col !justify-between min-h-[220px]">
+                    <div class="flex flex-col gap-3">
+                      <img src="https://framerusercontent.com/images/nBmS1U8s92WIveVNePAFLYYFODo.svg?width=60&amp;height=12" alt="stars" class="w-14" />
+                      <p class="text-[#7a685d] text-[15px] leading-relaxed">They didn't just take photos — they captured emotions, laughter, and our entire journey beautifully.</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-8">
+                      <img src="https://lh3.googleusercontent.com/a-/ALV-UjWl1J7UF2Ungdpix-RnhIaevqCa4tAoIGJqD0mF3HMYR49a1F2E=w72-h72-p-rp-mo-br100" alt="Ananya" class="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h5 class="text-[#7a685d] text-sm font-semibold">Ananya <span class="font-secondary">&amp;</span> Siddharth</h5>
+                        <p class="text-[#7a685d] text-xs font-normal">Wedding Couple</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-full lg:w-[35%] rounded-[28px] overflow-hidden relative min-h-[360px] sm:min-h-[500px]">
+              <img src="assets/img/testimonial-right.jpg" alt="Wedding couple" class="w-full h-full object-cover absolute inset-0" />
+              <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                <div class="rounded-[20px] p-5 sm:p-6 flex flex-col items-center gap-2 bg-gradient-to-b from-white/0 to-[rgba(152,106,62,0.5)] backdrop-blur-[30px]">
+                  <h4 class="text-white text-[40px] sm:text-[46px] leading-tight font-normal font-primary">5.0</h4>
+                  <img src="https://framerusercontent.com/images/Acl1ppgvFjpXDaMWy2sV8Mlbvc.svg?width=70&amp;height=13" alt="5 stars" class="w-16" />
+                  <p class="text-white text-xs font-medium tracking-wide">couples rating</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- GALLERIES MARQUEE -->
+        <section id="galleries" class="w-full relative pt-16 pb-20 md:pt-12 md:pb-20">
+          <img src="assets/img/flower-illustration.png" alt="" class="hidden md:block absolute left-0 top-0 -translate-y-[65%] w-[180px] lg:w-[240px] opacity-70 z-20 pointer-events-none select-none rotate-90" />
+          <div class="overflow-hidden">
+          <div class="marquee-row flex gap-3 md:gap-4">
+            <img src="assets/img/gallery/gallery-01.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-02.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-03.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-04.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-05.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-06.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-07.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-08.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-09.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-10.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-11.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-12.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-13.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-14.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-15.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-16.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-17.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-18.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-19.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-20.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-21.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-22.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-23.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-24.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-25.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-01.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-02.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-03.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-04.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-05.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-06.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-07.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-08.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-09.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-10.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-11.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-12.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-13.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-14.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-15.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-16.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-17.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-18.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-19.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-20.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-21.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-22.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-23.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-24.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+            <img src="assets/img/gallery/gallery-25.jpg" class="h-[600px] w-auto object-cover shrink-0" alt="" />
+          </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="w-full grid grid-cols-1 md:grid-cols-2 md:min-h-[700px]" style="background-color: #766f52;">
+          <div class="flex items-center justify-center p-8 py-16 md:p-16">
+            <div class="w-full max-w-md p-10 md:p-14 text-center" style="background-color: #3a3024;">
+              <h2 class="font-primary text-[26px] md:text-[40px] leading-tight md:leading-[48px] uppercase text-white">
+                More Than <br /> Just Photos
+              </h2>
+              <p class="text-white/70 text-sm md:text-base mt-6 leading-relaxed">
+                Every image is part of a bigger story. Ours begins with a chat, yours continues in timeless frames.
+              </p>
+              <a href="#contact" class="inline-block mt-8 text-white uppercase px-8 py-3.5" style="background-color: #766f52; font-family: 'Work Sans', sans-serif; font-size: 12px; letter-spacing: 0.6px;">Inquire Now</a>
+            </div>
+          </div>
+          <div class="relative overflow-hidden min-h-[400px] md:min-h-0">
+            <img src="assets/img/cta-texture-bg.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38%] bg-white p-2 md:p-3 shadow-2xl">
+              <video class="w-full h-auto block" src="https://video.wixstatic.com/video/c33238_86e7f942fdc64d009c86645bedc96cc7/480p/mp4/file.mp4" autoplay muted loop playsinline></video>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="relative w-full bg-black overflow-hidden">
+
+        <img class="absolute top-6 right-4 w-[50px] sm:top-10 sm:right-6 sm:w-[80px]"
+            src="https://framerusercontent.com/images/uYi7uZ7VUYeuBLsEfpMj0ZojozY.svg?width=162&height=172" alt="" />
+
+            <img class="absolute left-4 bottom-2 w-[50px]  sm:w-[80px]"
+            src="https://framerusercontent.com/images/uYi7uZ7VUYeuBLsEfpMj0ZojozY.svg?width=162&height=172" alt="" />
+
+        <div class="max-w-container !pb-[80px] !pt-[120px] md:!pb-[40px] md:!pt-[160px] relative z-10">
+            <div
+                class="w-full flex flex-col lg:flex-row flex-wrap items-center lg:items-start justify-center lg:justify-between gap-20 lg:gap-16 text-center lg:text-left">
+                <div class="shrink-0">
+                    <h4 class="font-primary text-white text-[36px] leading-[36px] mb-8">Links</h4>
+                    <div class="flex gap-16 justify-center lg:justify-start">
+                        <div class="flex flex-col gap-5 text-white/90 text-[16px]">
+                            <a href="#about" class="hover:text-white/60 transition-colors">About</a>
+                            <a href="#films" class="hover:text-white/60 transition-colors">Films</a>
+                            <a href="#photography" class="hover:text-white/60 transition-colors">Photography</a>
+                        </div>
+                        <div class="flex flex-col gap-5 text-white/90 text-[16px]">
+                            <a href="#packages" class="hover:text-white/60 transition-colors">Packages</a>
+                            <a href="#galleries" class="hover:text-white/60 transition-colors">Gallery</a>
+                            <a href="#testimonials" class="hover:text-white/60 transition-colors">Testimonials</a>
+                            <a href="#contact" class="hover:text-white/60 transition-colors">Contact</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center max-w-[420px] mx-auto">
+                    <div class="mb-6">
+                        <h3 class="font-primary uppercase text-white text-[32px] md:text-[40px] leading-[1.1] tracking-[2px]">Weddclicker.in</h3>
+                        <p class="mt-3 text-white/60 text-[13px] uppercase tracking-[3px]">Candid Photographer</p>
+                    </div>
+                    <p class="text-white/80 text-[18px] leading-[26px] mb-7">
+                        Candid photography &amp; videography.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="#" target="_blank"
+                            rel="noopener noreferrer" aria-label="Instagram"
+                            class="w-[44px] h-[44px] rounded-full bg-white flex items-center justify-center hover:opacity-80 transition-opacity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="black">
+                                <path
+                                    d="M12 2c-2.72 0-3.06.01-4.13.06-1.07.05-1.8.22-2.44.47a4.92 4.92 0 0 0-1.78 1.16A4.92 4.92 0 0 0 2.49 5.47c-.25.64-.42 1.37-.47 2.44C1.97 8.98 1.96 9.32 1.96 12s.01 3.06.06 4.13c.05 1.07.22 1.8.47 2.44.26.66.6 1.22 1.16 1.78.56.56 1.12.9 1.78 1.16.64.25 1.37.42 2.44.47 1.07.05 1.41.06 4.13.06s3.06-.01 4.13-.06c1.07-.05 1.8-.22 2.44-.47a4.92 4.92 0 0 0 1.78-1.16 4.92 4.92 0 0 0 1.16-1.78c.25-.64.42-1.37.47-2.44.05-1.07.06-1.41.06-4.13s-.01-3.06-.06-4.13c-.05-1.07-.22-1.8-.47-2.44a4.92 4.92 0 0 0-1.16-1.78A4.92 4.92 0 0 0 18.9.53c-.64-.25-1.37-.42-2.44-.47C15.39.01 15.05 0 12.33 0h-.33Zm0 1.8c2.67 0 2.99.01 4.04.06.97.04 1.5.21 1.85.34.47.18.8.4 1.15.75.35.35.57.68.75 1.15.13.35.3.88.34 1.85.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.97-.21 1.5-.34 1.85-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.35.13-.88.3-1.85.34-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.97-.04-1.5-.21-1.85-.34a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.13-.35-.3-.88-.34-1.85C3.81 14.99 3.8 14.67 3.8 12s.01-2.99.06-4.04c.04-.97.21-1.5.34-1.85.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.35-.13.88-.3 1.85-.34C9 1.81 9.33 1.8 12 1.8Zm0 3.07a5.13 5.13 0 1 0 0 10.26 5.13 5.13 0 0 0 0-10.26Zm0 8.46a3.33 3.33 0 1 1 0-6.66 3.33 3.33 0 0 1 0 6.66Zm6.54-8.66a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0Z" />
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank"
+                            rel="noopener noreferrer" aria-label="YouTube"
+                            class="w-[44px] h-[44px] rounded-full bg-white flex items-center justify-center hover:opacity-80 transition-opacity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="black">
+                                <path
+                                    d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" />
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer"
+                            aria-label="Facebook"
+                            class="w-[44px] h-[44px] rounded-full bg-white flex items-center justify-center hover:opacity-80 transition-opacity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="black">
+                                <path
+                                    d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.84c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z" />
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X"
+                            class="w-[44px] h-[44px] rounded-full bg-white flex items-center justify-center hover:opacity-80 transition-opacity">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="black">
+                                <path
+                                    d="M18.9 2H22l-7.2 8.23L23 22h-6.9l-5.4-7.06L4.3 22H1.2l7.7-8.8L1 2h7.1l4.9 6.46L18.9 2Zm-2.4 18h1.9L7.6 4H5.6l10.9 16Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="shrink-0 text-center lg:text-right">
+                    <h4 class="font-primary text-white text-[36px] leading-[36px] mb-8">Contact</h4>
+                    <div class="flex flex-col gap-4 text-white/90 text-[16px] leading-[24px]">
+                        <a href="tel:+917558686484" class="hover:text-white/60 transition-colors">+91 75586 86484</a>
+                        <a href="mailto:patilabhijit735@gmail.com" class="hover:text-white/60 transition-colors">patilabhijit735@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center pt-20 text-white/70 text-[15px]">
+                © Copyright 2026 | Weddclicker.in. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        function openSidebar() {
+          sidebar.classList.add('open');
+          overlay.classList.add('open');
+          hamburgerIcon.classList.remove('ri-menu-3-line');
+          hamburgerIcon.classList.add('ri-close-line');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('open');
+          hamburgerIcon.classList.remove('ri-close-line');
+          hamburgerIcon.classList.add('ri-menu-3-line');
+          document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', function () {
+          sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
+
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        sidebarLinks.forEach(function (link) {
+          link.addEventListener('click', closeSidebar);
+        });
+
+        // LENIS (smooth scroll) + GSAP ticker
+        gsap.registerPlugin(ScrollToPlugin);
+
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        // SINGLE PAGE LINKS: GSAP ScrollTo on every #anchor
+        function goToSection(hash, instant = false) {
+          const target = document.querySelector(hash);
+          if (!target) return;
+
+          lenis.stop(); // stop Lenis so it does not fight GSAP
+
+          gsap.to(window, {
+            duration: instant ? 0 : 1.4,
+            scrollTo: { y: target, autoKill: false },
+            ease: "power3.inOut",
+            onComplete: () => {
+              lenis.start();
+              lenis.scrollTo(window.scrollY, { immediate: true, force: true }); // resync Lenis
+            },
+          });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+          link.addEventListener("click", (e) => {
+            const hash = link.getAttribute("href");
+            if (!hash || hash === "#") return;
+            if (!document.querySelector(hash)) return;
+            e.preventDefault();
+            closeSidebar();
+            goToSection(hash);
+            history.pushState(null, "", hash);
+          });
+        });
+
+        // FILMS / PHOTOGRAPHY SWIPERS
+        const MIN_H = () => (window.innerWidth <= 768 ? 260 : 445); // side slides
+        const MAX_H = () => (window.innerWidth <= 768 ? 320 : 500); // active slide
+        const cineSwipers = [];
+        document.querySelectorAll(".cine-swiper").forEach((el, i) => {
+          const wrapper = el.querySelector(".swiper-wrapper");
+          const originals = Array.from(wrapper.children);
+          while (wrapper.children.length < 12) {
+            originals.forEach((c) => wrapper.appendChild(c.cloneNode(true)));
+          }
+
+          cineSwipers.push(
+            new Swiper(el, {
+              loop: true,
+              centeredSlides: true,
+              slidesPerView: "auto",
+              spaceBetween: 16,
+              loopAdditionalSlides: 3,
+              initialSlide: 0,
+              observer: true,
+              observeParents: true,
+              speed: 700,
+              grabCursor: true,
+              watchSlidesProgress: true,
+              autoplay: {
+                delay: 3000 + i * 700,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              },
+            }),
+          );
+        });
+
+        window.addEventListener("load", () => {
+          cineSwipers.forEach((sw) => {
+            sw.update();
+            sw.slideToLoop(0, 0, false);
+          });
+        });
+
+        // Clip-path height sync for films/photo slides (desktop only)
+        function cineTick() {
+          if (window.innerWidth <= 768) {
+            requestAnimationFrame(cineTick);
+            return;
+          }
+          const inset = MAX_H() - MIN_H();
+          cineSwipers.forEach((sw) => {
+            if (sw.destroyed || !sw.slides || !sw.slides.length) return;
+            sw.updateSlidesProgress(sw.getTranslate());
+            sw.slides.forEach((slide) => {
+              const p = Math.min(Math.abs(slide.progress), 1);
+              slide.style.clipPath =
+                "inset(" + (inset * p).toFixed(2) + "px 0px 0px 0px)";
+            });
+          });
+          requestAnimationFrame(cineTick);
+        }
+        requestAnimationFrame(cineTick);
+
+        // TESTIMONIAL SWIPER
+        new Swiper('.mySwiper', {
+          spaceBetween: 16,
+          slidesPerView: 1,
+          breakpoints: { 768: { slidesPerView: 2, spaceBetween: 20 } },
+          navigation: { nextEl: '.carousel-right', prevEl: '.carousel-left' },
+        });
+      });
+    </script>
+  </body>
+</html>
